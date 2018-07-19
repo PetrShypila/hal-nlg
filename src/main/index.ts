@@ -7,7 +7,8 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import {Request, Response} from "express";
 
-import model from '../../config/model';
+import logger from "./log/logger";
+import model from "../../config/model";
 
 const port = process.env.NODE_PORT || 8083;
 const app: express.Express = express();
@@ -17,6 +18,8 @@ app.use(bodyParser.json());
 
 app.post('/generate', (req: Request, res: Response) => {
   const request: IApiManagerOutput = req.body;
+  logger.debug("\n***\n***\n***");
+  logger.debug(`/generate: Request body`, request);
   const replySentences = [];
 
   request.received.forEach((intent: IDialogScriptParamState) => {
@@ -31,6 +34,10 @@ app.post('/generate', (req: Request, res: Response) => {
 
       replySentences.push(template);
   });
+
+  logger.debug(`/generate: Collected reply sentences:`, replySentences);
+  logger.debug(`/generate: Request language: ${request.language} and expect param: ${request.expect}`);
+  logger.debug(`/generate: Language model:`, model);
   // All expected sentences
   const expectSentences = model[request.language][request.expect].expect;
   // Series according to expectationCount
@@ -42,10 +49,10 @@ app.post('/generate', (req: Request, res: Response) => {
     utterance: replySentences.join(" "),
   };
 
+  logger.info("/generate: Response body", reply);
   res.send(reply);
 });
 
 app.listen(port, () => {
-  /* tslint:disable:no-console */
-  console.log(`Example app listening on port ${port}!`);
+  logger.info(`Example app listening on port ${port}!`);
 });
