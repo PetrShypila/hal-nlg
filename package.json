@@ -1,5 +1,5 @@
 {
-  "name": "alfred-nlg",
+  "name": "hal-nlg",
   "version": "1.0.0",
   "description": "NLG Service for Alfred project",
   "repository": "https://github.com/PetrShypila/alfred-nlg",
@@ -19,7 +19,7 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "alfred-protocols": "file:../alfred-protocols",
+    "hal-protocols": "file:../hal-protocols",
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "winston": "^3.0.0"
